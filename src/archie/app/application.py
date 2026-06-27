@@ -38,7 +38,11 @@ class Archie:
         await self.start()
 
         try:
-            repl = REPL(self.container.brain)
+            repl = REPL(
+                brain=self.container.brain,
+                personality=self.container.personality,
+            )
+
             await repl.run()
 
         finally:

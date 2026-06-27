@@ -4,15 +4,24 @@ from __future__ import annotations
 
 from archie.brain import Brain
 from archie.conversation import Conversation
+from archie.personality import PersonalityManager
 
 
 class REPL:
     """Interactive Read-Eval-Print Loop."""
+
     _brain: Brain
-    
-    def __init__(self, brain: Brain) -> None:
+    _personality: PersonalityManager
+
+    def __init__(
+        self,
+        brain: Brain,
+        personality: PersonalityManager,
+    ) -> None:
         """Initialize the REPL."""
+
         self._brain = brain
+        self._personality = personality
 
     async def run(self) -> None:
         """Start the interactive session."""
@@ -24,11 +33,14 @@ class REPL:
         print("Type 'exit' or 'quit' to leave.")
         print()
 
-        conversation = Conversation()
+        conversation = Conversation(
+            system_prompt=self._personality.prompt,
+        )
 
         while True:
             try:
                 user_input = input("You > ").strip()
+
             except (EOFError, KeyboardInterrupt):
                 print("\nGoodbye!")
                 break
@@ -41,11 +53,11 @@ class REPL:
                 break
 
             conversation.add_user_message(user_input)
-            
+
             response = self._brain.generate(
                 conversation.messages,
             )
-            
+
             conversation.add_assistant_message(
                 response.content,
             )

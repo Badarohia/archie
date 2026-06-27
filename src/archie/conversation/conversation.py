@@ -10,8 +10,16 @@ class Conversation:
 
     _messages: list[ChatMessage]
 
-    def __init__(self) -> None:
-        self._messages = []
+    def __init__(
+        self,
+        system_prompt: str,
+    ) -> None:
+        self._messages = [
+            ChatMessage(
+                role="system",
+                content=system_prompt,
+            )
+        ]
 
     @property
     def messages(self) -> tuple[ChatMessage, ...]:
@@ -46,6 +54,7 @@ class Conversation:
         )
 
     def clear(self) -> None:
-        """Clear the conversation."""
+        """Reset the conversation while preserving the system prompt."""
 
-        self._messages.clear()
+        system_message = self._messages[0]
+        self._messages = [system_message]

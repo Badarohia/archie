@@ -8,6 +8,7 @@ from archie.app.runtime import Runtime
 from archie.app.service_manager import ServiceManager
 from archie.brain import Brain
 from archie.config import Configuration
+from archie.personality import PersonalityManager
 
 
 @dataclass(slots=True, frozen=True)
@@ -18,3 +19,4 @@ class ApplicationContainer:
     runtime: Runtime
     services: ServiceManager
     brain: Brain
+    personality: PersonalityManager

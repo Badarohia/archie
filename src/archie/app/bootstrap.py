@@ -10,6 +10,7 @@ from archie.app.service_manager import ServiceManager
 from archie.brain import OllamaBrain
 from archie.config import ConfigurationManager
 from archie.container.application import ApplicationContainer
+from archie.personality import PersonalityManager
 
 
 def bootstrap() -> Archie:
@@ -23,6 +24,10 @@ def bootstrap() -> Archie:
 
     services = ServiceManager()
 
+    personality = PersonalityManager(
+        Path("src/archie/personality/prompt.txt"),
+    )
+
     brain = OllamaBrain(
         host=configuration.llm.host,
         model=configuration.llm.model,
@@ -34,6 +39,7 @@ def bootstrap() -> Archie:
         runtime=runtime,
         services=services,
         brain=brain,
+        personality=personality,
     )
 
     return Archie(
