@@ -14,23 +14,15 @@ console = Console()
 async def main() -> None:
     """Run the Archie application."""
 
-    app = await bootstrap()
-
-    await app.start()
-
-    console.print("[green]✓ Archie is online[/green]")
-    console.print("Press Ctrl+C to exit.\n")
+    app = bootstrap()
 
     try:
-        while True:
-            await asyncio.sleep(1)
+        await app.run()
 
     except KeyboardInterrupt:
-        console.print("\n[yellow]Stopping Archie...[/yellow]")
+        console.print("\n[yellow]Interrupted by user.[/yellow]")
 
     finally:
-        await app.stop()
-
         console.print("[green]Goodbye.[/green]")
 
 

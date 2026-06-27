@@ -23,8 +23,18 @@ class PathsConfig(ConfigModel):
     logs: Path
 
 
+class LLMConfig(ConfigModel):
+    """Language model configuration."""
+
+    provider: str
+    model: str
+    host: str
+    timeout: int
+
+
 class Configuration(ConfigModel):
     """Root configuration."""
 
     app: AppConfig
     paths: PathsConfig
+    llm: LLMConfig

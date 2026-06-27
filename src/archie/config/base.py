@@ -1,16 +1,9 @@
-"""Base configuration model."""
+"""Configuration base model."""
 
 from __future__ import annotations
 
-from typing import ClassVar
-
-from pydantic import BaseModel, ConfigDict
+from archie.models import ArchieModel
 
 
-class ConfigModel(BaseModel):
-    """Base class for all Archie configuration models."""
-
-    model_config: ClassVar[ConfigDict] = ConfigDict(
-        frozen=True,
-        extra="forbid",
-    )
+class ConfigModel(ArchieModel):
+    """Base class for configuration models."""

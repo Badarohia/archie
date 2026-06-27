@@ -1,9 +1,0 @@
-app:
-  name: Archie
-  version: 0.1.0
-  debug: true
-
-paths:
-  storage: storage
-  cache: storage/cache
-  logs: storage/logs

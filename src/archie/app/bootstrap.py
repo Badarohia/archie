@@ -1,28 +1,41 @@
-"""Application bootstrap."""
+"""Bootstrap the Archie application."""
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from archie.app.application import Archie
-from archie.app.banner import show_banner
-from archie.app.console import console
 from archie.app.runtime import Runtime
 from archie.app.service_manager import ServiceManager
+from archie.brain import OllamaBrain
+from archie.config import ConfigurationManager
+from archie.container.application import ApplicationContainer
 
 
-async def bootstrap() -> Archie:
-    """Create and initialize the Archie application."""
+def bootstrap() -> Archie:
+    """Create and configure the Archie application."""
 
-    show_banner()
+    configuration = ConfigurationManager(
+        Path("config"),
+    ).load()
 
     runtime = Runtime()
+
     services = ServiceManager()
 
-    app = Archie(
+    brain = OllamaBrain(
+        host=configuration.llm.host,
+        model=configuration.llm.model,
+        timeout=configuration.llm.timeout,
+    )
+
+    container = ApplicationContainer(
+        configuration=configuration,
         runtime=runtime,
         services=services,
+        brain=brain,
     )
-    console.print("[cyan]Bootstrapping Archie...[/cyan]")
 
-    await app.initialize()
-
-    return app
+    return Archie(
+        container=container,
+    )
