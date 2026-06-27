@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from archie.brain import Brain, ChatMessage
+from archie.brain import Brain
+from archie.conversation import Conversation
 
 
 class REPL:
@@ -23,6 +24,8 @@ class REPL:
         print("Type 'exit' or 'quit' to leave.")
         print()
 
+        conversation = Conversation()
+
         while True:
             try:
                 user_input = input("You > ").strip()
@@ -37,13 +40,14 @@ class REPL:
                 print("Goodbye!")
                 break
 
+            conversation.add_user_message(user_input)
+            
             response = self._brain.generate(
-                [
-                    ChatMessage(
-                        role="user",
-                        content=user_input,
-                    )
-                ]
+                conversation.messages,
+            )
+            
+            conversation.add_assistant_message(
+                response.content,
             )
 
             print(f"Archie > {response.content}")
